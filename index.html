@@ -23,35 +23,32 @@
             font-weight: bold;
             display: none;
         }
+        
+        #content {
+          position: relative;
+        }
+  
+        #mascara {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          background: transparent;
+          display: none;
+          z-index: 99999;
+        }
+        
     </style>
 </head>
 <body>
     <h1>Reproduza os vídeos</h1>
-    <p> Para reproduzir clique em iniciar e depois dê o player no vídeo </p>
+    <div id="content">
+      <div id="mascara"></div>
     <div id="player"></div>
     <div id="progress-bar-container">
         <div id="progress-bar"></div>
     </div>
     <button id="start-btn">INICIAR</button>
-    <div id="result">
-
-        
-    <iframe
-      id="JotFormIFrame-242485129877066"
-      title="SORTEIO"
-      onload="window.parent.scrollTo(0,0)"
-      allowtransparency="true"
-      allow="geolocation; microphone; camera; fullscreen"
-      src="https://form.jotform.com/242485129877066"
-      frameborder="0"
-      style="min-width:100%;max-width:100%;height:539px;border:none;"
-      scrolling="no"
-    >
-    </iframe>
-    <script src='https://cdn.jotfor.ms/s/umd/latest/for-form-embed-handler.js'></script>
-    <script>window.jotformEmbedHandler("iframe[id='JotFormIFrame-242485129877066']", "https://form.jotform.com/")</script>
-    
-        
+    <div id="result"></div>
     </div>
 
     <script>
@@ -81,6 +78,11 @@
 
         // Função que avança para o próximo vídeo ou conclui a tarefa
         function onPlayerStateChange(event) {
+          
+          if (event.data === YT.PlayerState.PLAYING) {
+        document.getElementById("mascara").style.display = "block"
+    }
+          
             if (event.data === YT.PlayerState.ENDED) {
                 currentVideoIndex++;
                 if (currentVideoIndex < videoIds.length) {
@@ -102,7 +104,7 @@
         function showCompletionMessage() {
             const randomCode = Math.random().toString(36).substring(2, 10).toUpperCase();
             const resultElement = document.getElementById('result');
-            //resultElement.textContent = `Você concluiu a tarefa. Código: ${randomCode}`;
+            resultElement.textContent = Você concluiu a tarefa. Código: ${randomCode};
             resultElement.style.display = 'block';
         }
 
@@ -115,8 +117,8 @@
         // Inicialização da API do YouTube iFrame
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
-                height: '390',
-                width: '640',
+                height:'50%',
+                width:'80%',
                 videoId: videoIds[currentVideoIndex],
                 events: {
                     'onStateChange': onPlayerStateChange
@@ -131,7 +133,10 @@
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
         // Configuração do botão de iniciar
-        document.getElementById('start-btn').addEventListener('click', startPlayback);
+        document.getElementById('start-btn').addEventListener('click', function(){
+           startPlayback();
+           //player.playVideo();
+        });
     </script>
 </body>
 </html>

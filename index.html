@@ -53,20 +53,25 @@
 
     <script>
         // Lista de IDs dos vídeos do YouTube
+       /* const videoIds = [
+            'WQyLhSjbL8Y',
+            'y5t8k-bqVOs'
+        ];*/
+        
         const videoIds = [
-            'T2o9tds035Q',
-            'm5k5FwPuZ0g',
-            'b_wK089R7xo',
-            'Ds3hfY0XTPs',
-            'cdN5m5GsNk8',
-            '-NL4jL6v7no',
-            'Ot_120hthuI',
-            'lI-dx7GhHHU',
-            'eQF8QRId9mE',
-            'xbdXefVh0H4',
-            'lcaM8CHBBdQ',
-            'WydNEQu6sbo'
-        ];
+                    'T2o9tds035Q',
+                    'm5k5FwPuZ0g',
+                    'b_wK089R7xo',
+                    'Ds3hfY0XTPs',
+                    'cdN5m5GsNk8',
+                    '-NL4jL6v7no',
+                    'Ot_120hthuI',
+                    'lI-dx7GhHHU',
+                    'eQF8QRId9mE',
+                    'xbdXefVh0H4',
+                    'lcaM8CHBBdQ',
+                    'WydNEQu6sbo'
+                ];
 
         let currentVideoIndex = 0;
         let player;
@@ -104,7 +109,7 @@
         function showCompletionMessage() {
             const randomCode = Math.random().toString(36).substring(2, 10).toUpperCase();
             const resultElement = document.getElementById('result');
-            resultElement.textContent = Você concluiu a tarefa. Código: ${randomCode};
+            resultElement.textContent = `Você concluiu a tarefa. Código: ${randomCode}`;
             resultElement.style.display = 'block';
         }
 

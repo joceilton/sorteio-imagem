@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reprodução de Vídeos do YouTube</title>
+    <style>
+        #progress-bar-container {
+            width: 100%;
+            background-color: #ddd;
+            margin-top: 10px;
+        }
+
+        #progress-bar {
+            width: 0;
+            height: 25px;
+            background-color: #4caf50;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Reproduza os vídeos</h1>
+    <div id="player"></div>
+    <div id="progress-bar-container">
+        <div id="progress-bar"></div>
+    </div>
+    <button id="start-btn">INICIAR</button>
+    <div id="result"></div>
+
+    <script>
+        // Lista de IDs dos vídeos do YouTube
+        const videoIds = [
+            'T2o9tds035Q',
+            'm5k5FwPuZ0g',
+            'b_wK089R7xo',
+            'Ds3hfY0XTPs',
+            'cdN5m5GsNk8',
+            '-NL4jL6v7no',
+            'Ot_120hthuI',
+            'lI-dx7GhHHU',
+            'eQF8QRId9mE',
+            'xbdXefVh0H4',
+            'lcaM8CHBBdQ',
+            'WydNEQu6sbo'
+        ];
+
+        let currentVideoIndex = 0;
+        let player;
+
+        // Função que carrega o vídeo atual
+        function loadVideo(videoId) {
+            player.loadVideoById(videoId);
+        }
+
+        // Função que avança para o próximo vídeo ou conclui a tarefa
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.ENDED) {
+                currentVideoIndex++;
+                if (currentVideoIndex < videoIds.length) {
+                    loadVideo(videoIds[currentVideoIndex]);
+                    updateProgressBar();
+                } else {
+                    showCompletionMessage();
+                }
+            }
+        }
+
+        // Função para atualizar a barra de progresso
+        function updateProgressBar() {
+            const progress = ((currentVideoIndex + 1) / videoIds.length) * 100;
+            document.getElementById('progress-bar').style.width = progress + '%';
+        }
+
+        // Função que mostra a mensagem de conclusão com um código aleatório
+        function showCompletionMessage() {
+            const randomCode = Math.random().toString(36).substring(2, 10).toUpperCase();
+            const resultElement = document.getElementById('result');
+            resultElement.textContent = `Você concluiu a tarefa. Código: ${randomCode}`;
+            resultElement.style.display = 'block';
+        }
+
+        // Função para iniciar a reprodução
+        function startPlayback() {
+            loadVideo(videoIds[currentVideoIndex]);
+            updateProgressBar();
+        }
+
+        // Inicialização da API do YouTube iFrame
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '390',
+                width: '640',
+                videoId: videoIds[currentVideoIndex],
+                events: {
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        // Carregar a API do YouTube iFrame
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // Configuração do botão de iniciar
+        document.getElementById('start-btn').addEventListener('click', startPlayback);
+    </script>
+</body>
+</html>
